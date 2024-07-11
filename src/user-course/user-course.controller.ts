@@ -8,27 +8,27 @@ export class UserCourseController {
   constructor(private readonly userCourseService: UserCourseService) {}
 
   @Post()
-  create(@Body() createUserCourseDto: CreateUserCourseDto) {
-    return this.userCourseService.create(createUserCourseDto);
+ async create(@Body() createUserCourseDto: CreateUserCourseDto) {
+    return await this.userCourseService.create(createUserCourseDto);
   }
 
   @Get()
-  findAll() {
-    return this.userCourseService.findAll();
+  async findAll() {
+    return await this.userCourseService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userCourseService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.userCourseService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserCourseDto: UpdateUserCourseDto) {
-    return this.userCourseService.update(+id, updateUserCourseDto);
+  async update(@Param('id') id: string, @Body() updateUserCourseDto: UpdateUserCourseDto) {
+    return await this.userCourseService.update(+id, updateUserCourseDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userCourseService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.userCourseService.remove(+id);
   }
 }

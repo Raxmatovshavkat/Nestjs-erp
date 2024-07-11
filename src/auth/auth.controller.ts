@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete,  ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete,  ValidationPipe, UsePipes, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateRegisterDto } from '../user/dto/register-user.dto';
 import { CreateLoginDto } from 'src/user/dto/login-user.dto ';
+import { JwtAuthGuard } from 'src/guard/guard';
 
 @Controller('auth')
 export class AuthController {
@@ -9,30 +10,33 @@ export class AuthController {
     private readonly authService: AuthService
   ) { }
 
-  
-  @Post('signup')
+
+  @Post('register')
   @UsePipes(ValidationPipe)
-  signUp(@Body() createRegisterDto: CreateRegisterDto) {
-    return this.authService.signup(createRegisterDto);
+  async signUp(@Body() createRegisterDto: CreateRegisterDto) {
+    return await this.authService.signup(createRegisterDto);
   }
 
   @Post('login')
-  signIn(@Body() createLoginDto: CreateLoginDto) {
-    return this.authService.signIn(createLoginDto);
+  async signIn(@Body() createLoginDto: CreateLoginDto) {
+    return await this.authService.signIn(createLoginDto);
   }
 
   @Get()
-  findAll() {
-    return this.authService.findAll();
+  @UseGuards(JwtAuthGuard)
+ async findAll() {
+    return await this.authService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+  @UseGuards(JwtAuthGuard)
+ async findOne(@Param('id') id: string) {
+    return await this.authService.findOne(+id);
   }
 
   @Delete('logout/:id')
-  remove(@Param('id') id: string) {
-    return this.authService.logout(+id);
+  @UseGuards(JwtAuthGuard)
+ async remove(@Param('id') id: string) {
+    return await this.authService.logout(+id);
   }
 }

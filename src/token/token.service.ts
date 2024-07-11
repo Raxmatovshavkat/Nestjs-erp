@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import { RefreshToken } from './entities/token.entity';
@@ -20,5 +20,9 @@ export class RefreshTokenService {
   async removeTokensForUser(userId: number): Promise<{ acknowledged: boolean; deletedCount: number }> {
     const result = await this.refreshTokenModel.destroy({ where: { userId } });
     return { acknowledged: true, deletedCount: result };
+  }
+
+  async getAll(){
+    return this.refreshTokenModel.findAll()
   }
 }

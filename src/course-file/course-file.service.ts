@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCourseFileDto } from './dto/create-course-file.dto';
 import { UpdateCourseFileDto } from './dto/update-course-file.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { CourseFile } from './entities/course-file.entity';
 
 @Injectable()
 export class CourseFileService {
-  create(createCourseFileDto: CreateCourseFileDto) {
-    return 'This action adds a new courseFile';
+  constructor(@InjectModel(CourseFile) private readonly courseFileService:typeof CourseFile){}
+ async create(createCourseFileDto: CreateCourseFileDto) {
+    return await this.courseFileService.create({...createCourseFileDto});
   }
 
-  findAll() {
-    return `This action returns all courseFile`;
+  async findAll() {
+    const coursFile=await this.courseFileService.findAll()
+    if(!coursFile){
+      throw new NotFoundException()
+    }
+    return coursFile
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} courseFile`;
+  async findOne(id: number) {
+    const coursFile = await this.courseFileService.findByPk(id)
+    if (!coursFile) {
+      throw new NotFoundException()
+    }
+    return coursFile
   }
 
-  update(id: number, updateCourseFileDto: UpdateCourseFileDto) {
-    return `This action updates a #${id} courseFile`;
+  async update(id: number, updateCourseFileDto: UpdateCourseFileDto) {
+    const coursFile = await this.courseFileService.findByPk(id)
+    if (!coursFile) {
+      throw new NotFoundException()
+    }
+    return coursFile.update(updateCourseFileDto)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} courseFile`;
+  async remove(id: number) {
+    const coursFile = await this.courseFileService.findByPk(id)
+    if (!coursFile) {
+      throw new NotFoundException()
+    }
+    return coursFile.destroy()
   }
 }

@@ -10,10 +10,10 @@ import * as bcrypt from "bcrypt"
 export class UserService {
   constructor(@InjectModel(User) private readonly userModel:typeof User){}
 
- async signup(createRegisterDto: CreateRegisterDto) {
-  const {password,...rest}=createRegisterDto
-  const hashedPassword=bcrypt.hash(password,10)
-    return await this.userModel.create({hashedPassword,...rest});
+  async signup(createRegisterDto: CreateRegisterDto) {
+    const { password, ...rest } = createRegisterDto;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return await this.userModel.create({ ...rest, password: hashedPassword });
   }
 
   async signin(createLoginDto: CreateLoginDto) {

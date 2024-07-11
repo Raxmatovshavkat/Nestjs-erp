@@ -20,8 +20,8 @@ export class AuthService {
   async signIn(createLoginDto: CreateLoginDto): Promise<{ accessToken: string, refreshToken: string }> {
     const user = await this.authService.signin(createLoginDto);
 
-    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-    const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+    const accessTokenSecret = process.env.DATABASE_REFRESH_TOKEN_SECRET;
+    const refreshTokenSecret = process.env.DATABASE_ACCESS_TOKEN_SECRET;
 
     if (!accessTokenSecret || !refreshTokenSecret) {
       throw new Error('JWT secret not configured');

@@ -7,24 +7,21 @@ import { CourseFileModule } from './course-file/course-file.module';
 import { UserCourseModule } from './user-course/user-course.module';
 import { RefreshTokenModule } from './token/token.module';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { databaseConfig } from './config/db';
 import * as dotenv from "dotenv"
-console.log();
+import { ConfigModule } from '@nestjs/config';
+import { LoggingInterceptor } from './log/logging.intercetor';
+console.log(process.env.DATABASE_DIALECT as any);
 
-dotenv.config(process.env.DATABASE_DIALECT as any)
+dotenv.config()
 @Module({
 
+  
   imports: [
-    SequelizeModule.forRoot({
-      dialect: process.env.DATABASE_DIALECT as any,
-      host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.PORT_DB, 10),
-      username: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      autoLoadModels: process.env.DATABASE_AUTO_LOAD_MODELS === 'true',
-      synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
-      logging: false
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
+    SequelizeModule.forRoot(databaseConfig()),
     AuthModule,
     UserModule,
     FilesModule,
@@ -34,7 +31,12 @@ dotenv.config(process.env.DATABASE_DIALECT as any)
     RefreshTokenModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 
 export class AppModule { }

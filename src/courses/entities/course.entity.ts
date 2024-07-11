@@ -1,8 +1,10 @@
 import { Column, HasMany, Model, Table } from 'sequelize-typescript';
+import { CourseFile } from 'src/course-file/entities/course-file.entity';
 
 
-@Table
+@Table({tableName: "Courses"})
 export class Course extends Model {
+    
     @Column({ allowNull: false })
     name: string
 
@@ -11,6 +13,8 @@ export class Course extends Model {
     })
     price:number
 
+    @HasMany(() => CourseFile)
+    courses: CourseFile[];
 }
 
 

@@ -8,27 +8,27 @@ export class CourseFileController {
   constructor(private readonly courseFileService: CourseFileService) {}
 
   @Post()
-  create(@Body() createCourseFileDto: CreateCourseFileDto) {
-    return this.courseFileService.create(createCourseFileDto);
+  async create(@Body() createCourseFileDto: CreateCourseFileDto) {
+    return await this.courseFileService.create(createCourseFileDto);
   }
 
   @Get()
-  findAll() {
-    return this.courseFileService.findAll();
+  async findAll() {
+    return await this.courseFileService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.courseFileService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.courseFileService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseFileDto: UpdateCourseFileDto) {
-    return this.courseFileService.update(+id, updateCourseFileDto);
+  async update(@Param('id') id: string, @Body() updateCourseFileDto: UpdateCourseFileDto) {
+    return await this.courseFileService.update(+id, updateCourseFileDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.courseFileService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.courseFileService.remove(+id);
   }
 }

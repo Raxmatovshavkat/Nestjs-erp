@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { File } from './entities/file.entity';
 import { CreateFileDto } from './dto/create-file.dto';
@@ -22,10 +22,10 @@ export class FilesService {
 
   async update(id: number, updateFileDto: UpdateFileDto) {
     const file = await this.fileModel.findByPk(id);
-    if (file) {
-      return await file.update({ ...updateFileDto });
+    if (!file) {
+      throw new NotFoundException()
     }
-    return null;
+    return await file.update({ ...updateFileDto });
   }
 
   async remove(id: number) {
