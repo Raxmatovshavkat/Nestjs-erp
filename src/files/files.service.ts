@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { File } from './entities/file.entity';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
-import { InjectModel } from '@nestjs/sequelize';
-
 
 @Injectable()
 export class FilesService {
-  constructor(@InjectModel(File) private readonly fileModel:typeof File) { }
+  constructor(@InjectModel(File) private readonly fileModel: typeof File) { }
 
   async create(createFileDto: CreateFileDto) {
-    return await this.fileModel.create({...createFileDto});
+    return await this.fileModel.create({ ...createFileDto });
   }
 
   async findAll() {
@@ -21,10 +21,18 @@ export class FilesService {
   }
 
   async update(id: number, updateFileDto: UpdateFileDto) {
-    const file=this.fileModel.findByPk(id)
+    const file = await this.fileModel.findByPk(id);
+    if (file) {
+      return await file.update({ ...updateFileDto });
+    }
+    return null;
   }
 
   async remove(id: number) {
-    return await this.fileModel.findByIdAndDelete(id).exec();
+    const file = await this.fileModel.findByPk(id);
+    if (file) {
+      return await file.destroy();
+    }
+    return null;
   }
 }

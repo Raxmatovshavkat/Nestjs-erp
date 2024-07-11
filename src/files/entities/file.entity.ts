@@ -1,9 +1,10 @@
+import { Model } from 'sequelize';
+import { Table, Column } from 'sequelize-typescript';
 
-import { exec } from "child_process";
-import { Column, Model, Table } from "sequelize-typescript";
+
 
 @Table
-export class File extends Model{
+export class File extends Model<File>{
     @Column({ allowNull:false})
     userId: string;
 
