@@ -8,7 +8,9 @@ import { UserCourseModule } from './user-course/user-course.module';
 import { RefreshTokenModule } from './token/token.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import * as dotenv from "dotenv"
-dotenv.config()
+console.log();
+
+dotenv.config(process.env.DATABASE_DIALECT as any)
 @Module({
 
   imports: [

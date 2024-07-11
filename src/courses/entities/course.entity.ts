@@ -1,5 +1,5 @@
 import { Column, HasMany, Model, Table } from 'sequelize-typescript';
-import { CourseFile } from 'src/course-file/entities/course-file.entity';
+
 
 @Table
 export class Course extends Model {
@@ -11,8 +11,6 @@ export class Course extends Model {
     })
     price:number
 
-    @HasMany(() => CourseFile)
-    courses: CourseFile[]
 }
 
 
